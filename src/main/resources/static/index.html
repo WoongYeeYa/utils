@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Utils Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .function-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+        }
+
+        .function-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #e7f3ff;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-family: 'Courier New', monospace;
+            color: #212529;
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        .error {
+            background: #ffe7e7;
+            border-left-color: #dc3545;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Java Utils Tester</h1>
+            <p>웹에서 각 유틸리티 기능을 테스트해보세요</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="openTab(event, 'string')">StringUtils</button>
+            <button class="tab" onclick="openTab(event, 'date')">DateUtils</button>
+            <button class="tab" onclick="openTab(event, 'file')">FileUtils</button>
+            <button class="tab" onclick="openTab(event, 'collection')">CollectionUtils</button>
+            <button class="tab" onclick="openTab(event, 'response')">ResponseUtils</button>
+        </div>
+
+        <!-- StringUtils Tab -->
+        <div id="string" class="tab-content active">
+            <div class="function-card">
+                <h3>문자열 검증</h3>
+                <div class="form-group">
+                    <label>문자열 입력</label>
+                    <input type="text" id="str-check" placeholder="검증할 문자열 입력">
+                </div>
+                <button class="btn btn-primary" onclick="checkString('isEmpty')">isEmpty 확인</button>
+                <button class="btn btn-primary" onclick="checkString('isBlank')">isBlank 확인</button>
+                <div id="result-string-check" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>케이스 변환</h3>
+                <div class="form-group">
+                    <label>문자열 입력</label>
+                    <input type="text" id="str-case" placeholder="예: userName 또는 user_name">
+                </div>
+                <button class="btn btn-primary" onclick="convertCase('camelToSnake')">camelCase → snake_case</button>
+                <button class="btn btn-primary" onclick="convertCase('snakeToCamel')">snake_case → camelCase</button>
+                <div id="result-case" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>마스킹</h3>
+                <div class="grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label>이메일 입력</label>
+                            <input type="text" id="email-mask" placeholder="example@email.com">
+                        </div>
+                        <button class="btn btn-primary" onclick="maskEmail()">이메일 마스킹</button>
+                        <div id="result-email-mask" class="result"></div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>전화번호 입력</label>
+                            <input type="text" id="phone-mask" placeholder="010-1234-5678">
+                        </div>
+                        <button class="btn btn-primary" onclick="maskPhone()">전화번호 마스킹</button>
+                        <div id="result-phone-mask" class="result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <h3>랜덤 문자열 생성</h3>
+                <div class="grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label>길이</label>
+                            <input type="number" id="random-alpha-length" value="10" min="1" max="50">
+                        </div>
+                        <button class="btn btn-primary" onclick="generateRandom('alphanumeric')">영숫자 생성</button>
+                        <div id="result-random-alpha" class="result"></div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>길이</label>
+                            <input type="number" id="random-num-length" value="6" min="1" max="20">
+                        </div>
+                        <button class="btn btn-primary" onclick="generateRandom('numeric')">숫자 생성</button>
+                        <div id="result-random-num" class="result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DateUtils Tab -->
+        <div id="date" class="tab-content">
+            <div class="function-card">
+                <h3>현재 날짜/시간</h3>
+                <div class="form-group">
+                    <label>포맷 선택</label>
+                    <select id="date-pattern">
+                        <option value="yyyy-MM-dd HH:mm:ss">yyyy-MM-dd HH:mm:ss</option>
+                        <option value="yyyy-MM-dd">yyyy-MM-dd</option>
+                        <option value="yyyyMMdd">yyyyMMdd</option>
+                        <option value="yyyy년 MM월 dd일">yyyy년 MM월 dd일</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="getCurrentDateTime()">현재 날짜/시간 가져오기</button>
+                <div id="result-current-date" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>날짜 포맷 변환</h3>
+                <div class="form-group">
+                    <label>날짜 문자열</label>
+                    <input type="text" id="date-str" placeholder="예: 2024-01-01">
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>원본 포맷</label>
+                        <input type="text" id="from-pattern" value="yyyy-MM-dd">
+                    </div>
+                    <div class="form-group">
+                        <label>변환 포맷</label>
+                        <input type="text" id="to-pattern" value="yyyy년 MM월 dd일">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="convertDateFormat()">포맷 변환</button>
+                <div id="result-convert-date" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>날짜 계산</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>시작 날짜</label>
+                        <input type="date" id="start-date">
+                    </div>
+                    <div class="form-group">
+                        <label>종료 날짜</label>
+                        <input type="date" id="end-date">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="getDaysBetween()">두 날짜 사이 일수 계산</button>
+                <div id="result-days-between" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>날짜 더하기</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>기준 날짜</label>
+                        <input type="date" id="base-date">
+                    </div>
+                    <div class="form-group">
+                        <label>추가할 일수 (음수 가능)</label>
+                        <input type="number" id="add-days-value" value="7">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addDays()">날짜 계산</button>
+                <div id="result-add-days" class="result"></div>
+            </div>
+        </div>
+
+        <!-- FileUtils Tab -->
+        <div id="file" class="tab-content">
+            <div class="function-card">
+                <h3>파일 확장자 추출</h3>
+                <div class="form-group">
+                    <label>파일명 입력</label>
+                    <input type="text" id="filename-ext" placeholder="예: document.pdf">
+                </div>
+                <button class="btn btn-primary" onclick="getExtension()">확장자 추출</button>
+                <div id="result-extension" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>파일 크기 변환</h3>
+                <div class="grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label>바이트 입력</label>
+                            <input type="number" id="file-size-bytes" placeholder="예: 1048576" value="1048576">
+                        </div>
+                        <button class="btn btn-primary" onclick="formatFileSize()">읽기 쉬운 형식으로</button>
+                        <div id="result-format-size" class="result"></div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>크기 문자열</label>
+                            <input type="text" id="file-size-str" placeholder="예: 1 MB" value="1 MB">
+                        </div>
+                        <button class="btn btn-primary" onclick="parseFileSize()">바이트로 변환</button>
+                        <div id="result-parse-size" class="result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <h3>파일 타입 확인</h3>
+                <div class="form-group">
+                    <label>파일명 입력</label>
+                    <input type="text" id="filename-check" placeholder="예: photo.jpg">
+                </div>
+                <button class="btn btn-primary" onclick="checkFileType('isImage')">이미지 확인</button>
+                <button class="btn btn-primary" onclick="checkFileType('isDocument')">문서 확인</button>
+                <div id="result-file-type" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>파일명 처리</h3>
+                <div class="grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label>파일명 입력</label>
+                            <input type="text" id="filename-sanitize" placeholder="예: my file@#$.txt">
+                        </div>
+                        <button class="btn btn-primary" onclick="sanitizeFilename()">안전한 파일명으로</button>
+                        <div id="result-sanitize" class="result"></div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>파일명 입력</label>
+                            <input type="text" id="filename-unique" placeholder="예: document.pdf">
+                        </div>
+                        <button class="btn btn-primary" onclick="generateUniqueFilename()">고유 파일명 생성</button>
+                        <div id="result-unique" class="result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <h3>MIME 타입 추측</h3>
+                <div class="form-group">
+                    <label>파일명 입력</label>
+                    <input type="text" id="filename-mime" placeholder="예: image.png">
+                </div>
+                <button class="btn btn-primary" onclick="guessMimeType()">MIME 타입 추측</button>
+                <div id="result-mime" class="result"></div>
+            </div>
+        </div>
+
+        <!-- CollectionUtils Tab -->
+        <div id="collection" class="tab-content">
+            <div class="function-card">
+                <h3>리스트 분할 (Partition)</h3>
+                <div class="form-group">
+                    <label>리스트 입력 (쉼표로 구분)</label>
+                    <input type="text" id="list-partition" placeholder="예: 1,2,3,4,5,6,7,8,9,10" value="1,2,3,4,5,6,7,8,9,10">
+                </div>
+                <div class="form-group">
+                    <label>분할 크기</label>
+                    <input type="number" id="partition-size" value="3" min="1">
+                </div>
+                <button class="btn btn-primary" onclick="partitionList()">분할하기</button>
+                <div id="result-partition" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>중복 제거</h3>
+                <div class="form-group">
+                    <label>리스트 입력 (쉼표로 구분)</label>
+                    <input type="text" id="list-duplicates" placeholder="예: 1,2,2,3,3,3,4,5,5" value="1,2,2,3,3,3,4,5,5">
+                </div>
+                <button class="btn btn-primary" onclick="removeDuplicates()">중복 제거</button>
+                <div id="result-duplicates" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>집합 연산</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>리스트 1</label>
+                        <input type="text" id="collection1" placeholder="예: 1,2,3,4,5" value="1,2,3,4,5">
+                    </div>
+                    <div class="form-group">
+                        <label>리스트 2</label>
+                        <input type="text" id="collection2" placeholder="예: 4,5,6,7,8" value="4,5,6,7,8">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="setOperation('intersection')">교집합</button>
+                <button class="btn btn-primary" onclick="setOperation('union')">합집합</button>
+                <button class="btn btn-primary" onclick="setOperation('subtract')">차집합 (1-2)</button>
+                <div id="result-set-operation" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>리스트 조작</h3>
+                <div class="form-group">
+                    <label>리스트 입력 (쉼표로 구분)</label>
+                    <input type="text" id="list-manipulate" placeholder="예: 1,2,3,4,5" value="1,2,3,4,5">
+                </div>
+                <button class="btn btn-primary" onclick="manipulateList('reverse')">역순 정렬</button>
+                <button class="btn btn-primary" onclick="manipulateList('shuffle')">셔플</button>
+                <div id="result-manipulate" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>페이지네이션</h3>
+                <div class="form-group">
+                    <label>리스트 입력 (쉼표로 구분)</label>
+                    <input type="text" id="list-paginate" placeholder="예: 1,2,3,4,5,6,7,8,9,10" value="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15">
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>페이지 번호</label>
+                        <input type="number" id="page-number" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>페이지 크기</label>
+                        <input type="number" id="page-size" value="5" min="1">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="paginateList()">페이지 조회</button>
+                <div id="result-paginate" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ResponseUtils Tab -->
+        <div id="response" class="tab-content">
+            <div class="function-card">
+                <h3>ResponseUtils 예제</h3>
+                <p style="margin-bottom: 20px; color: #6c757d;">
+                    ResponseUtils는 API 응답을 통일된 형식으로 반환하기 위한 유틸리티입니다.<br>
+                    모든 API 응답은 다음과 같은 형식을 따릅니다:
+                </p>
+                <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+{
+    "success": true,
+    "message": "Success",
+    "data": { ... },
+    "errorCode": null,
+    "timestamp": 1234567890
+}</pre>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">성공 응답 예제</h4>
+                <button class="btn btn-primary" onclick="showSuccessExample()">성공 응답 보기</button>
+                <div id="result-success" class="result"></div>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">실패 응답 예제</h4>
+                <button class="btn btn-primary" onclick="showFailExample()">실패 응답 보기</button>
+                <div id="result-fail" class="result"></div>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">페이지네이션 응답 예제</h4>
+                <button class="btn btn-primary" onclick="showPageExample()">페이지 응답 보기</button>
+                <div id="result-page" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

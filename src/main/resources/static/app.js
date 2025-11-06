@@ -324,6 +324,289 @@ async function paginateList() {
     }
 }
 
+// ==================== ValidationUtils Functions ====================
+
+async function validateEmail() {
+    const email = document.getElementById('validate-email').value;
+    try {
+        const result = await callApi('/validation/isValidEmail', { email });
+        showResult('result-validate-email', result ? '유효한 이메일입니다' : '유효하지 않은 이메일입니다');
+    } catch (error) {
+        showResult('result-validate-email', error.message, true);
+    }
+}
+
+async function validatePhone() {
+    const phone = document.getElementById('validate-phone').value;
+    try {
+        const result = await callApi('/validation/isValidPhone', { phone });
+        showResult('result-validate-phone', result ? '유효한 전화번호입니다' : '유효하지 않은 전화번호입니다');
+    } catch (error) {
+        showResult('result-validate-phone', error.message, true);
+    }
+}
+
+async function checkPassword() {
+    const password = document.getElementById('password-strength').value;
+    try {
+        const result = await callApi('/validation/checkPasswordStrength', { password });
+        showResult('result-password', result);
+    } catch (error) {
+        showResult('result-password', error.message, true);
+    }
+}
+
+async function validateUrl() {
+    const url = document.getElementById('validate-url').value;
+    try {
+        const result = await callApi('/validation/isValidUrl', { url });
+        showResult('result-validate-url', result ? '유효한 URL입니다' : '유효하지 않은 URL입니다');
+    } catch (error) {
+        showResult('result-validate-url', error.message, true);
+    }
+}
+
+async function validateIp() {
+    const ip = document.getElementById('validate-ip').value;
+    try {
+        const result = await callApi('/validation/isValidIpAddress', { ip });
+        showResult('result-validate-ip', result ? '유효한 IP 주소입니다' : '유효하지 않은 IP 주소입니다');
+    } catch (error) {
+        showResult('result-validate-ip', error.message, true);
+    }
+}
+
+// ==================== JsonUtils Functions ====================
+
+async function formatJsonPretty() {
+    const json = document.getElementById('json-input').value;
+    try {
+        const result = await callApi('/json/formatJson', { json });
+        showResult('result-json', result);
+    } catch (error) {
+        showResult('result-json', error.message, true);
+    }
+}
+
+async function minifyJsonString() {
+    const json = document.getElementById('json-input').value;
+    try {
+        const result = await callApi('/json/minifyJson', { json });
+        showResult('result-json', result);
+    } catch (error) {
+        showResult('result-json', error.message, true);
+    }
+}
+
+async function validateJson() {
+    const json = document.getElementById('json-input').value;
+    try {
+        const result = await callApi('/json/isValidJson', { json });
+        showResult('result-json', result ? '유효한 JSON입니다' : '유효하지 않은 JSON입니다');
+    } catch (error) {
+        showResult('result-json', error.message, true);
+    }
+}
+
+// ==================== NumberUtils Functions ====================
+
+async function formatNumber() {
+    const number = parseInt(document.getElementById('number-format').value);
+    try {
+        const result = await callApi('/number/formatWithComma', { number });
+        showResult('result-number-format', result);
+    } catch (error) {
+        showResult('result-number-format', error.message, true);
+    }
+}
+
+async function calculatePercent() {
+    const value = parseFloat(document.getElementById('percent-value').value);
+    const total = parseFloat(document.getElementById('percent-total').value);
+    try {
+        const result = await callApi('/number/calculatePercentage', { value, total });
+        showResult('result-percent', result);
+    } catch (error) {
+        showResult('result-percent', error.message, true);
+    }
+}
+
+async function checkPrime() {
+    const number = parseInt(document.getElementById('prime-number').value);
+    try {
+        const result = await callApi('/number/isPrime', { number });
+        showResult('result-prime', result ? `${number}은(는) 소수입니다` : `${number}은(는) 소수가 아닙니다`);
+    } catch (error) {
+        showResult('result-prime', error.message, true);
+    }
+}
+
+// ==================== HttpUtils Functions ====================
+
+async function getClientInfo() {
+    try {
+        const result = await callApi('/http/getClientIp', {}, 'GET');
+        showResult('result-http-info', `IP 주소: ${result}`);
+    } catch (error) {
+        showResult('result-http-info', error.message, true);
+    }
+}
+
+async function getBrowser() {
+    try {
+        const result = await callApi('/http/getBrowserType', {}, 'GET');
+        showResult('result-http-info', `브라우저: ${result}`);
+    } catch (error) {
+        showResult('result-http-info', error.message, true);
+    }
+}
+
+async function checkMobile() {
+    try {
+        const result = await callApi('/http/isMobileDevice', {}, 'GET');
+        showResult('result-http-info', result ? '모바일 디바이스입니다' : 'PC입니다');
+    } catch (error) {
+        showResult('result-http-info', error.message, true);
+    }
+}
+
+async function parseQuery() {
+    const queryString = document.getElementById('query-string').value;
+    try {
+        const result = await callApi('/http/parseQueryString', { queryString });
+        showResult('result-query', result);
+    } catch (error) {
+        showResult('result-query', error.message, true);
+    }
+}
+
+// ==================== IdUtils Functions ====================
+
+async function generateId(type) {
+    try {
+        const endpoints = {
+            'uuid': '/id/generateUuid',
+            'shortUuid': '/id/generateShortUuid',
+            'snowflakeId': '/id/generateSnowflakeId',
+            'nanoId': '/id/generateNanoId',
+            'ulid': '/id/generateUlid'
+        };
+        const result = await callApi(endpoints[type], {}, 'GET');
+        showResult('result-id', result);
+    } catch (error) {
+        showResult('result-id', error.message, true);
+    }
+}
+
+async function generateRandomIdCustom() {
+    const length = parseInt(document.getElementById('random-id-length').value);
+    try {
+        const result = await callApi('/id/generateRandomId', { length });
+        showResult('result-random-id', result);
+    } catch (error) {
+        showResult('result-random-id', error.message, true);
+    }
+}
+
+// ==================== RegexUtils Functions ====================
+
+async function regexMatch() {
+    const text = document.getElementById('regex-text').value;
+    const regex = document.getElementById('regex-pattern').value;
+    try {
+        const result = await callApi('/regex/matches', { text, regex });
+        showResult('result-regex', result ? '매칭됩니다' : '매칭되지 않습니다');
+    } catch (error) {
+        showResult('result-regex', error.message, true);
+    }
+}
+
+async function regexFindAll() {
+    const text = document.getElementById('regex-text').value;
+    const regex = document.getElementById('regex-pattern').value;
+    try {
+        const result = await callApi('/regex/findAll', { text, regex });
+        showResult('result-regex', result);
+    } catch (error) {
+        showResult('result-regex', error.message, true);
+    }
+}
+
+async function extractEmails() {
+    const text = document.getElementById('extract-email-text').value;
+    try {
+        const result = await callApi('/regex/extractEmails', { text });
+        showResult('result-extract-email', result);
+    } catch (error) {
+        showResult('result-extract-email', error.message, true);
+    }
+}
+
+async function removeHtml() {
+    const text = document.getElementById('html-text').value;
+    try {
+        const result = await callApi('/regex/removeHtmlTags', { text });
+        showResult('result-remove-html', result);
+    } catch (error) {
+        showResult('result-remove-html', error.message, true);
+    }
+}
+
+// ==================== MoneyUtils Functions ====================
+
+async function formatKoreanWon() {
+    const amount = parseInt(document.getElementById('krw-amount').value);
+    try {
+        const result = await callApi('/money/formatKRW', { amount });
+        showResult('result-krw', result);
+    } catch (error) {
+        showResult('result-krw', error.message, true);
+    }
+}
+
+async function calcDiscount() {
+    const originalPrice = parseInt(document.getElementById('original-price').value);
+    const discountPercent = parseInt(document.getElementById('discount-rate').value);
+    try {
+        const result = await callApi('/money/calculateDiscount', { originalPrice, discountPercent });
+        showResult('result-discount', `할인가: ${result}원`);
+    } catch (error) {
+        showResult('result-discount', error.message, true);
+    }
+}
+
+async function calcVat() {
+    const amount = parseInt(document.getElementById('vat-amount').value);
+    try {
+        const result = await callApi('/money/addVAT', { amount });
+        showResult('result-vat', `부가세 포함: ${result}원`);
+    } catch (error) {
+        showResult('result-vat', error.message, true);
+    }
+}
+
+async function splitMoney() {
+    const amount = parseInt(document.getElementById('split-amount').value);
+    const numberOfPeople = parseInt(document.getElementById('split-people').value);
+    try {
+        const result = await callApi('/money/splitAmount', { amount, numberOfPeople });
+        showResult('result-split', `1인당: ${result}원`);
+    } catch (error) {
+        showResult('result-split', error.message, true);
+    }
+}
+
+// ==================== ObjectUtils Functions ====================
+
+async function testObject() {
+    try {
+        const result = await callApi('/object/test', {}, 'GET');
+        showResult('result-object-test', result);
+    } catch (error) {
+        showResult('result-object-test', error.message, true);
+    }
+}
+
 // ==================== ResponseUtils Examples ====================
 
 function showSuccessExample() {

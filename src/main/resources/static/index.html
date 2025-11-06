@@ -228,6 +228,14 @@
             <button class="tab" onclick="openTab(event, 'date')">DateUtils</button>
             <button class="tab" onclick="openTab(event, 'file')">FileUtils</button>
             <button class="tab" onclick="openTab(event, 'collection')">CollectionUtils</button>
+            <button class="tab" onclick="openTab(event, 'validation')">ValidationUtils</button>
+            <button class="tab" onclick="openTab(event, 'json')">JsonUtils</button>
+            <button class="tab" onclick="openTab(event, 'number')">NumberUtils</button>
+            <button class="tab" onclick="openTab(event, 'http')">HttpUtils</button>
+            <button class="tab" onclick="openTab(event, 'id')">IdUtils</button>
+            <button class="tab" onclick="openTab(event, 'regex')">RegexUtils</button>
+            <button class="tab" onclick="openTab(event, 'money')">MoneyUtils</button>
+            <button class="tab" onclick="openTab(event, 'object')">ObjectUtils</button>
             <button class="tab" onclick="openTab(event, 'response')">ResponseUtils</button>
         </div>
 
@@ -521,6 +529,267 @@
                 </div>
                 <button class="btn btn-primary" onclick="paginateList()">페이지 조회</button>
                 <div id="result-paginate" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ValidationUtils Tab -->
+        <div id="validation" class="tab-content">
+            <div class="function-card">
+                <h3>이메일 & 전화번호 검증</h3>
+                <div class="grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label>이메일 입력</label>
+                            <input type="text" id="validate-email" placeholder="test@example.com">
+                        </div>
+                        <button class="btn btn-primary" onclick="validateEmail()">이메일 검증</button>
+                        <div id="result-validate-email" class="result"></div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>전화번호 입력</label>
+                            <input type="text" id="validate-phone" placeholder="010-1234-5678">
+                        </div>
+                        <button class="btn btn-primary" onclick="validatePhone()">전화번호 검증</button>
+                        <div id="result-validate-phone" class="result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <h3>비밀번호 강도 체크</h3>
+                <div class="form-group">
+                    <label>비밀번호 입력</label>
+                    <input type="password" id="password-strength" placeholder="비밀번호 입력">
+                </div>
+                <button class="btn btn-primary" onclick="checkPassword()">강도 체크</button>
+                <div id="result-password" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>기타 검증</h3>
+                <div class="grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label>URL 입력</label>
+                            <input type="text" id="validate-url" placeholder="https://example.com">
+                        </div>
+                        <button class="btn btn-primary" onclick="validateUrl()">URL 검증</button>
+                        <div id="result-validate-url" class="result"></div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>IP 주소 입력</label>
+                            <input type="text" id="validate-ip" placeholder="192.168.0.1">
+                        </div>
+                        <button class="btn btn-primary" onclick="validateIp()">IP 검증</button>
+                        <div id="result-validate-ip" class="result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JsonUtils Tab -->
+        <div id="json" class="tab-content">
+            <div class="function-card">
+                <h3>JSON 포맷팅</h3>
+                <div class="form-group">
+                    <label>JSON 문자열 입력</label>
+                    <textarea id="json-input" placeholder='{"name":"John","age":30}'></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="formatJsonPretty()">예쁘게 포맷</button>
+                <button class="btn btn-primary" onclick="minifyJsonString()">압축하기</button>
+                <button class="btn btn-primary" onclick="validateJson()">유효성 검증</button>
+                <div id="result-json" class="result"></div>
+            </div>
+        </div>
+
+        <!-- NumberUtils Tab -->
+        <div id="number" class="tab-content">
+            <div class="function-card">
+                <h3>숫자 포맷팅</h3>
+                <div class="form-group">
+                    <label>숫자 입력</label>
+                    <input type="number" id="number-format" placeholder="1234567" value="1234567">
+                </div>
+                <button class="btn btn-primary" onclick="formatNumber()">콤마 포맷</button>
+                <div id="result-number-format" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>백분율 계산</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>값</label>
+                        <input type="number" id="percent-value" value="25">
+                    </div>
+                    <div class="form-group">
+                        <label>전체</label>
+                        <input type="number" id="percent-total" value="100">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="calculatePercent()">백분율 계산</button>
+                <div id="result-percent" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>소수 판별</h3>
+                <div class="form-group">
+                    <label>숫자 입력</label>
+                    <input type="number" id="prime-number" value="17">
+                </div>
+                <button class="btn btn-primary" onclick="checkPrime()">소수 확인</button>
+                <div id="result-prime" class="result"></div>
+            </div>
+        </div>
+
+        <!-- HttpUtils Tab -->
+        <div id="http" class="tab-content">
+            <div class="function-card">
+                <h3>HTTP 정보 확인</h3>
+                <button class="btn btn-primary" onclick="getClientInfo()">내 IP 확인</button>
+                <button class="btn btn-primary" onclick="getBrowser()">브라우저 확인</button>
+                <button class="btn btn-primary" onclick="checkMobile()">모바일 확인</button>
+                <div id="result-http-info" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>쿼리 스트링 처리</h3>
+                <div class="form-group">
+                    <label>쿼리 스트링 입력</label>
+                    <input type="text" id="query-string" placeholder="name=John&age=30&city=Seoul" value="name=John&age=30&city=Seoul">
+                </div>
+                <button class="btn btn-primary" onclick="parseQuery()">파싱하기</button>
+                <div id="result-query" class="result"></div>
+            </div>
+        </div>
+
+        <!-- IdUtils Tab -->
+        <div id="id" class="tab-content">
+            <div class="function-card">
+                <h3>다양한 ID 생성</h3>
+                <button class="btn btn-primary" onclick="generateId('uuid')">UUID</button>
+                <button class="btn btn-primary" onclick="generateId('shortUuid')">Short UUID</button>
+                <button class="btn btn-primary" onclick="generateId('snowflakeId')">Snowflake ID</button>
+                <button class="btn btn-primary" onclick="generateId('nanoId')">Nano ID</button>
+                <button class="btn btn-primary" onclick="generateId('ulid')">ULID</button>
+                <div id="result-id" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>커스텀 ID 생성</h3>
+                <div class="form-group">
+                    <label>길이</label>
+                    <input type="number" id="random-id-length" value="10" min="1" max="50">
+                </div>
+                <button class="btn btn-primary" onclick="generateRandomIdCustom()">랜덤 ID 생성</button>
+                <div id="result-random-id" class="result"></div>
+            </div>
+        </div>
+
+        <!-- RegexUtils Tab -->
+        <div id="regex" class="tab-content">
+            <div class="function-card">
+                <h3>정규식 매칭</h3>
+                <div class="form-group">
+                    <label>텍스트 입력</label>
+                    <textarea id="regex-text" placeholder="테스트할 텍스트 입력">My email is test@example.com and john@test.com</textarea>
+                </div>
+                <div class="form-group">
+                    <label>정규식 패턴</label>
+                    <input type="text" id="regex-pattern" placeholder="예: \d+" value="[a-z]+@[a-z]+\.[a-z]+">
+                </div>
+                <button class="btn btn-primary" onclick="regexMatch()">매칭 확인</button>
+                <button class="btn btn-primary" onclick="regexFindAll()">모두 찾기</button>
+                <div id="result-regex" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>이메일 추출</h3>
+                <div class="form-group">
+                    <label>텍스트 입력</label>
+                    <textarea id="extract-email-text" placeholder="이메일이 포함된 텍스트">Contact us at support@example.com or sales@company.co.kr</textarea>
+                </div>
+                <button class="btn btn-primary" onclick="extractEmails()">이메일 추출</button>
+                <div id="result-extract-email" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>HTML 태그 제거</h3>
+                <div class="form-group">
+                    <label>HTML 입력</label>
+                    <textarea id="html-text" placeholder="HTML 텍스트"><p>This is <strong>bold</strong> text</p></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="removeHtml()">태그 제거</button>
+                <div id="result-remove-html" class="result"></div>
+            </div>
+        </div>
+
+        <!-- MoneyUtils Tab -->
+        <div id="money" class="tab-content">
+            <div class="function-card">
+                <h3>원화 포맷팅</h3>
+                <div class="form-group">
+                    <label>금액 입력</label>
+                    <input type="number" id="krw-amount" value="1234567" placeholder="1234567">
+                </div>
+                <button class="btn btn-primary" onclick="formatKoreanWon()">원화 포맷</button>
+                <div id="result-krw" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>할인 계산</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>원가</label>
+                        <input type="number" id="original-price" value="100000">
+                    </div>
+                    <div class="form-group">
+                        <label>할인율 (%)</label>
+                        <input type="number" id="discount-rate" value="20" min="0" max="100">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="calcDiscount()">할인가 계산</button>
+                <div id="result-discount" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>부가세 계산</h3>
+                <div class="form-group">
+                    <label>금액 입력</label>
+                    <input type="number" id="vat-amount" value="10000">
+                </div>
+                <button class="btn btn-primary" onclick="calcVat()">부가세 포함 금액</button>
+                <div id="result-vat" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>N분의 1 계산</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>총 금액</label>
+                        <input type="number" id="split-amount" value="50000">
+                    </div>
+                    <div class="form-group">
+                        <label>인원 수</label>
+                        <input type="number" id="split-people" value="3" min="1">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="splitMoney()">1인당 금액 계산</button>
+                <div id="result-split" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ObjectUtils Tab -->
+        <div id="object" class="tab-content">
+            <div class="function-card">
+                <h3>ObjectUtils 테스트</h3>
+                <p style="margin-bottom: 20px; color: #6c757d;">
+                    ObjectUtils는 객체 처리를 위한 유틸리티입니다.<br>
+                    객체 변환, null 체크, 비교 등의 기능을 제공합니다.
+                </p>
+                <button class="btn btn-primary" onclick="testObject()">테스트 실행</button>
+                <div id="result-object-test" class="result"></div>
             </div>
         </div>
 

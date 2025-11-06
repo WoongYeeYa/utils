@@ -3,13 +3,23 @@ package com.common.controller;
 import com.common.utils.collection.CollectionUtils;
 import com.common.utils.date.DateUtils;
 import com.common.utils.file.FileUtils;
+import com.common.utils.http.HttpUtils;
+import com.common.utils.id.IdUtils;
+import com.common.utils.json.JsonUtils;
+import com.common.utils.money.MoneyUtils;
+import com.common.utils.number.NumberUtils;
+import com.common.utils.object.ObjectUtils;
+import com.common.utils.regex.RegexUtils;
 import com.common.utils.response.ApiResponse;
 import com.common.utils.response.ResponseUtils;
 import com.common.utils.string.StringUtils;
+import com.common.utils.validation.ValidationUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -302,6 +312,333 @@ public class UtilsController {
         int page = (Integer) request.get("page");
         int pageSize = (Integer) request.get("pageSize");
         List<Object> result = CollectionUtils.paginate(list, page, pageSize);
+        return ResponseUtils.success(result);
+    }
+
+    // ==================== ValidationUtils API ====================
+
+    @PostMapping("/validation/isValidEmail")
+    public ApiResponse<Boolean> isValidEmail(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        boolean result = ValidationUtils.isValidEmail(email);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/validation/isValidPhone")
+    public ApiResponse<Boolean> isValidPhone(@RequestBody Map<String, String> request) {
+        String phone = request.get("phone");
+        boolean result = ValidationUtils.isValidPhone(phone);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/validation/isValidUrl")
+    public ApiResponse<Boolean> isValidUrl(@RequestBody Map<String, String> request) {
+        String url = request.get("url");
+        boolean result = ValidationUtils.isValidUrl(url);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/validation/checkPasswordStrength")
+    public ApiResponse<Map<String, Object>> checkPasswordStrength(@RequestBody Map<String, String> request) {
+        String password = request.get("password");
+        int strength = ValidationUtils.checkPasswordStrength(password);
+        String strengthText = ValidationUtils.getPasswordStrengthText(password);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("strength", strength);
+        result.put("strengthText", strengthText);
+
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/validation/isValidCreditCard")
+    public ApiResponse<Boolean> isValidCreditCard(@RequestBody Map<String, String> request) {
+        String cardNumber = request.get("cardNumber");
+        boolean result = ValidationUtils.isValidCreditCard(cardNumber);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/validation/isValidIpAddress")
+    public ApiResponse<Boolean> isValidIpAddress(@RequestBody Map<String, String> request) {
+        String ip = request.get("ip");
+        boolean result = ValidationUtils.isValidIpAddress(ip);
+        return ResponseUtils.success(result);
+    }
+
+    // ==================== JsonUtils API ====================
+
+    @PostMapping("/json/toJson")
+    public ApiResponse<String> toJson(@RequestBody Object obj) {
+        String result = JsonUtils.toJson(obj);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/json/toPrettyJson")
+    public ApiResponse<String> toPrettyJson(@RequestBody Object obj) {
+        String result = JsonUtils.toPrettyJson(obj);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/json/isValidJson")
+    public ApiResponse<Boolean> isValidJson(@RequestBody Map<String, String> request) {
+        String json = request.get("json");
+        boolean result = JsonUtils.isValidJson(json);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/json/formatJson")
+    public ApiResponse<String> formatJson(@RequestBody Map<String, String> request) {
+        String json = request.get("json");
+        String result = JsonUtils.formatJson(json);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/json/minifyJson")
+    public ApiResponse<String> minifyJson(@RequestBody Map<String, String> request) {
+        String json = request.get("json");
+        String result = JsonUtils.minifyJson(json);
+        return ResponseUtils.success(result);
+    }
+
+    // ==================== NumberUtils API ====================
+
+    @PostMapping("/number/formatWithComma")
+    public ApiResponse<String> formatWithComma(@RequestBody Map<String, Object> request) {
+        Number number = (Number) request.get("number");
+        String result = NumberUtils.formatWithComma(number.longValue());
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/calculatePercentage")
+    public ApiResponse<String> calculatePercentage(@RequestBody Map<String, Object> request) {
+        Number value = (Number) request.get("value");
+        Number total = (Number) request.get("total");
+        String result = NumberUtils.formatPercentage(value.doubleValue(), total.doubleValue());
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/round")
+    public ApiResponse<Double> round(@RequestBody Map<String, Object> request) {
+        Number value = (Number) request.get("value");
+        int scale = (Integer) request.getOrDefault("scale", 2);
+        double result = NumberUtils.round(value.doubleValue(), scale);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/randomInt")
+    public ApiResponse<Integer> randomInt(@RequestBody Map<String, Integer> request) {
+        int min = request.getOrDefault("min", 1);
+        int max = request.getOrDefault("max", 100);
+        int result = NumberUtils.randomInt(min, max);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/isPrime")
+    public ApiResponse<Boolean> isPrime(@RequestBody Map<String, Integer> request) {
+        int number = request.get("number");
+        boolean result = NumberUtils.isPrime(number);
+        return ResponseUtils.success(result);
+    }
+
+    // ==================== HttpUtils API ====================
+
+    @GetMapping("/http/getClientIp")
+    public ApiResponse<String> getClientIp(HttpServletRequest request) {
+        String result = HttpUtils.getClientIp(request);
+        return ResponseUtils.success(result);
+    }
+
+    @GetMapping("/http/getBrowserType")
+    public ApiResponse<String> getBrowserType(HttpServletRequest request) {
+        String result = HttpUtils.getBrowserType(request);
+        return ResponseUtils.success(result);
+    }
+
+    @GetMapping("/http/isMobileDevice")
+    public ApiResponse<Boolean> isMobileDevice(HttpServletRequest request) {
+        boolean result = HttpUtils.isMobileDevice(request);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/http/parseQueryString")
+    public ApiResponse<Map<String, String>> parseQueryString(@RequestBody Map<String, String> request) {
+        String queryString = request.get("queryString");
+        Map<String, String> result = HttpUtils.parseQueryString(queryString);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/http/buildQueryString")
+    public ApiResponse<String> buildQueryString(@RequestBody Map<String, String> params) {
+        String result = HttpUtils.buildQueryString(params);
+        return ResponseUtils.success(result);
+    }
+
+    // ==================== IdUtils API ====================
+
+    @GetMapping("/id/generateUuid")
+    public ApiResponse<String> generateUuid() {
+        String result = IdUtils.generateUuid();
+        return ResponseUtils.success(result);
+    }
+
+    @GetMapping("/id/generateShortUuid")
+    public ApiResponse<String> generateShortUuid() {
+        String result = IdUtils.generateShortUuid();
+        return ResponseUtils.success(result);
+    }
+
+    @GetMapping("/id/generateSnowflakeId")
+    public ApiResponse<String> generateSnowflakeId() {
+        String result = IdUtils.generateSnowflakeIdString();
+        return ResponseUtils.success(result);
+    }
+
+    @GetMapping("/id/generateNanoId")
+    public ApiResponse<String> generateNanoId() {
+        String result = IdUtils.generateNanoId();
+        return ResponseUtils.success(result);
+    }
+
+    @GetMapping("/id/generateUlid")
+    public ApiResponse<String> generateUlid() {
+        String result = IdUtils.generateUlid();
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/id/generateRandomId")
+    public ApiResponse<String> generateRandomId(@RequestBody Map<String, Integer> request) {
+        int length = request.getOrDefault("length", 10);
+        String result = IdUtils.generateRandomId(length);
+        return ResponseUtils.success(result);
+    }
+
+    // ==================== RegexUtils API ====================
+
+    @PostMapping("/regex/matches")
+    public ApiResponse<Boolean> regexMatches(@RequestBody Map<String, String> request) {
+        String text = request.get("text");
+        String regex = request.get("regex");
+        boolean result = RegexUtils.matches(text, regex);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/regex/findAll")
+    public ApiResponse<List<String>> findAll(@RequestBody Map<String, String> request) {
+        String text = request.get("text");
+        String regex = request.get("regex");
+        List<String> result = RegexUtils.findAll(text, regex);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/regex/replace")
+    public ApiResponse<String> regexReplace(@RequestBody Map<String, String> request) {
+        String text = request.get("text");
+        String regex = request.get("regex");
+        String replacement = request.get("replacement");
+        String result = RegexUtils.replace(text, regex, replacement);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/regex/isEmail")
+    public ApiResponse<Boolean> regexIsEmail(@RequestBody Map<String, String> request) {
+        String text = request.get("text");
+        boolean result = RegexUtils.isEmail(text);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/regex/extractEmails")
+    public ApiResponse<List<String>> extractEmails(@RequestBody Map<String, String> request) {
+        String text = request.get("text");
+        List<String> result = RegexUtils.extractEmails(text);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/regex/removeHtmlTags")
+    public ApiResponse<String> removeHtmlTags(@RequestBody Map<String, String> request) {
+        String text = request.get("text");
+        String result = RegexUtils.removeHtmlTags(text);
+        return ResponseUtils.success(result);
+    }
+
+    // ==================== MoneyUtils API ====================
+
+    @PostMapping("/money/formatKRW")
+    public ApiResponse<String> formatKRW(@RequestBody Map<String, Object> request) {
+        Number amount = (Number) request.get("amount");
+        String result = MoneyUtils.formatKRW(amount.longValue());
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/money/convertCurrency")
+    public ApiResponse<String> convertCurrency(@RequestBody Map<String, Object> request) {
+        Number amount = (Number) request.get("amount");
+        String fromCurrency = (String) request.get("fromCurrency");
+        String toCurrency = (String) request.get("toCurrency");
+        BigDecimal result = MoneyUtils.convertCurrency(
+                new BigDecimal(amount.toString()), fromCurrency, toCurrency);
+        return ResponseUtils.success(result.toString());
+    }
+
+    @PostMapping("/money/calculateDiscount")
+    public ApiResponse<String> calculateDiscount(@RequestBody Map<String, Object> request) {
+        Number originalPrice = (Number) request.get("originalPrice");
+        int discountPercent = (Integer) request.get("discountPercent");
+        BigDecimal result = MoneyUtils.calculateDiscount(
+                new BigDecimal(originalPrice.toString()), discountPercent);
+        return ResponseUtils.success(result.toString());
+    }
+
+    @PostMapping("/money/addVAT")
+    public ApiResponse<String> addVAT(@RequestBody Map<String, Object> request) {
+        Number amount = (Number) request.get("amount");
+        BigDecimal result = MoneyUtils.addVAT(new BigDecimal(amount.toString()));
+        return ResponseUtils.success(result.toString());
+    }
+
+    @PostMapping("/money/splitAmount")
+    public ApiResponse<String> splitAmount(@RequestBody Map<String, Object> request) {
+        Number amount = (Number) request.get("amount");
+        int numberOfPeople = (Integer) request.get("numberOfPeople");
+        BigDecimal result = MoneyUtils.splitAmount(
+                new BigDecimal(amount.toString()), numberOfPeople);
+        return ResponseUtils.success(result.toString());
+    }
+
+    // ==================== ObjectUtils API ====================
+
+    @PostMapping("/object/isNull")
+    public ApiResponse<Boolean> isNull(@RequestBody Map<String, Object> request) {
+        Object obj = request.get("obj");
+        boolean result = ObjectUtils.isNull(obj);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/object/toJsonString")
+    public ApiResponse<String> objectToJsonString(@RequestBody Object obj) {
+        String result = ObjectUtils.toJsonString(obj);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/object/isEmpty")
+    public ApiResponse<Boolean> isObjectEmpty(@RequestBody Map<String, Object> request) {
+        Object obj = request.get("obj");
+        boolean result = ObjectUtils.isEmpty(obj);
+        return ResponseUtils.success(result);
+    }
+
+    @GetMapping("/object/test")
+    public ApiResponse<Map<String, Object>> objectTest() {
+        Map<String, Object> testObj = new HashMap<>();
+        testObj.put("name", "John Doe");
+        testObj.put("age", 30);
+        testObj.put("email", "john@example.com");
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("original", testObj);
+        result.put("json", ObjectUtils.toJsonString(testObj));
+        result.put("isEmpty", ObjectUtils.isEmpty(testObj));
+        result.put("className", ObjectUtils.getClassName(testObj));
+
         return ResponseUtils.success(result);
     }
 }

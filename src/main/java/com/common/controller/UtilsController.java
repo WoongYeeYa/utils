@@ -440,6 +440,83 @@ public class UtilsController {
         return ResponseUtils.success(result);
     }
 
+    @PostMapping("/number/ceil")
+    public ApiResponse<Double> ceil(@RequestBody Map<String, Object> request) {
+        Number value = (Number) request.get("value");
+        int scale = (Integer) request.getOrDefault("scale", 2);
+        double result = NumberUtils.ceil(value.doubleValue(), scale);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/floor")
+    public ApiResponse<Double> floor(@RequestBody Map<String, Object> request) {
+        Number value = (Number) request.get("value");
+        int scale = (Integer) request.getOrDefault("scale", 2);
+        double result = NumberUtils.floor(value.doubleValue(), scale);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/randomDouble")
+    public ApiResponse<Double> randomDouble(@RequestBody Map<String, Object> request) {
+        Number min = (Number) request.getOrDefault("min", 0);
+        Number max = (Number) request.getOrDefault("max", 1);
+        double result = NumberUtils.randomDouble(min.doubleValue(), max.doubleValue());
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/average")
+    public ApiResponse<Double> average(@RequestBody Map<String, Object> request) {
+        @SuppressWarnings("unchecked")
+        List<Number> numbers = (List<Number>) request.get("numbers");
+        double[] doubleArray = numbers.stream().mapToDouble(Number::doubleValue).toArray();
+        double result = NumberUtils.average(doubleArray);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/gcd")
+    public ApiResponse<Integer> gcd(@RequestBody Map<String, Integer> request) {
+        int a = request.get("a");
+        int b = request.get("b");
+        int result = NumberUtils.gcd(a, b);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/lcm")
+    public ApiResponse<Integer> lcm(@RequestBody Map<String, Integer> request) {
+        int a = request.get("a");
+        int b = request.get("b");
+        int result = NumberUtils.lcm(a, b);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/isEven")
+    public ApiResponse<Boolean> isEven(@RequestBody Map<String, Integer> request) {
+        int number = request.get("number");
+        boolean result = NumberUtils.isEven(number);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/isOdd")
+    public ApiResponse<Boolean> isOdd(@RequestBody Map<String, Integer> request) {
+        int number = request.get("number");
+        boolean result = NumberUtils.isOdd(number);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/toRoman")
+    public ApiResponse<String> toRoman(@RequestBody Map<String, Integer> request) {
+        int number = request.get("number");
+        String result = NumberUtils.toRoman(number);
+        return ResponseUtils.success(result);
+    }
+
+    @PostMapping("/number/formatBytes")
+    public ApiResponse<String> formatBytes(@RequestBody Map<String, Object> request) {
+        Number bytes = (Number) request.get("bytes");
+        String result = NumberUtils.formatBytes(bytes.longValue());
+        return ResponseUtils.success(result);
+    }
+
     // ==================== HttpUtils API ====================
 
     @GetMapping("/http/getClientIp")

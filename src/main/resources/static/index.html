@@ -195,6 +195,21 @@
             border-left-color: #dc3545;
         }
 
+        .error-detail {
+            margin: 8px 0;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .error-detail strong {
+            color: #dc3545;
+            display: inline-block;
+            min-width: 100px;
+        }
+
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -633,13 +648,116 @@
             </div>
 
             <div class="function-card">
-                <h3>소수 판별</h3>
+                <h3>반올림/올림/내림</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>숫자 입력</label>
+                        <input type="number" step="0.01" id="round-value" value="123.456" placeholder="123.456">
+                    </div>
+                    <div class="form-group">
+                        <label>소수점 자리수</label>
+                        <input type="number" id="round-scale" value="2" min="0" max="10">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="roundNumber()">반올림</button>
+                <button class="btn btn-primary" onclick="ceilNumber()">올림</button>
+                <button class="btn btn-primary" onclick="floorNumber()">내림</button>
+                <div id="result-round" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>랜덤 숫자 생성</h3>
+                <div class="grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 10px; color: #667eea;">정수 생성</h4>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>최소값</label>
+                                <input type="number" id="random-int-min" value="1">
+                            </div>
+                            <div class="form-group">
+                                <label>최대값</label>
+                                <input type="number" id="random-int-max" value="100">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateRandomInt()">랜덤 정수</button>
+                        <div id="result-random-int" class="result"></div>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 10px; color: #667eea;">실수 생성</h4>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>최소값</label>
+                                <input type="number" step="0.01" id="random-double-min" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>최대값</label>
+                                <input type="number" step="0.01" id="random-double-max" value="1">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateRandomDouble()">랜덤 실수</button>
+                        <div id="result-random-double" class="result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <h3>평균 계산</h3>
+                <div class="form-group">
+                    <label>숫자 입력 (쉼표로 구분)</label>
+                    <input type="text" id="average-numbers" placeholder="10, 20, 30, 40, 50" value="10, 20, 30, 40, 50">
+                </div>
+                <button class="btn btn-primary" onclick="calculateAverage()">평균 계산</button>
+                <div id="result-average" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>최대공약수(GCD) & 최소공배수(LCM)</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>첫 번째 숫자</label>
+                        <input type="number" id="gcd-num1" value="48">
+                    </div>
+                    <div class="form-group">
+                        <label>두 번째 숫자</label>
+                        <input type="number" id="gcd-num2" value="18">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="calculateGCD()">최대공약수</button>
+                <button class="btn btn-primary" onclick="calculateLCM()">최소공배수</button>
+                <div id="result-gcd-lcm" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>숫자 속성 확인</h3>
                 <div class="form-group">
                     <label>숫자 입력</label>
-                    <input type="number" id="prime-number" value="17">
+                    <input type="number" id="check-number" value="42">
                 </div>
-                <button class="btn btn-primary" onclick="checkPrime()">소수 확인</button>
-                <div id="result-prime" class="result"></div>
+                <button class="btn btn-primary" onclick="checkNumberProperty('prime')">소수 확인</button>
+                <button class="btn btn-primary" onclick="checkNumberProperty('even')">짝수 확인</button>
+                <button class="btn btn-primary" onclick="checkNumberProperty('odd')">홀수 확인</button>
+                <div id="result-number-property" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>로마 숫자 변환</h3>
+                <div class="form-group">
+                    <label>숫자 입력 (1-3999)</label>
+                    <input type="number" id="roman-number" value="2024" min="1" max="3999">
+                </div>
+                <button class="btn btn-primary" onclick="convertToRoman()">로마 숫자로 변환</button>
+                <div id="result-roman" class="result"></div>
+            </div>
+
+            <div class="function-card">
+                <h3>바이트 단위 변환</h3>
+                <div class="form-group">
+                    <label>바이트 입력</label>
+                    <input type="number" id="bytes-number" value="1073741824" placeholder="1073741824">
+                </div>
+                <button class="btn btn-primary" onclick="formatBytes()">읽기 쉬운 형식으로</button>
+                <div id="result-bytes" class="result"></div>
             </div>
         </div>
 
